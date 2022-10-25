@@ -1,0 +1,50 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows", "linux-musl", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password      String
+  imageUrl      String?
+  coverUrl      String?
+  address       String?
+  tiktokName    String?
+  twitterName   String?
+  vkName        String?
+  tgName        String?
+  instagramName String?
+  createdAt     DateTime @default(now())
+  //  gifts         Gift[]
+}
+
+model Gift {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  shopName    String
+  shopUrl     String
+  price       Int
+  createdAt   DateTime @default(now())
+  imageUrl    String?
+  isGifted    Boolean  @default(false)
+  userId      String
+  // user        User     @relation(fields: [userId], references: [id])
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  giftId      String
+  // gift       Gift     @relation(fields: [giftId], references: [id])
+  gifterId    String
+  // giftUser   User     @relation(fields: [giftUserId], references: [id])
+  createdAt   DateTime @default(now())
+  isCompleted Boolean  @default(false)
+}
