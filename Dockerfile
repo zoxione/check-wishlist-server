@@ -11,6 +11,7 @@ COPY tsconfig.json ./
 COPY . .
 
 RUN yarn install
+RUN yarn prisma migrate dev --name init
 RUN yarn add @prisma/client
 EXPOSE 3000
 
