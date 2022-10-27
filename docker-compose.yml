@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: app:latest
     container_name: app
     ports:
       - 3000:3000
