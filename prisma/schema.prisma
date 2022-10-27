@@ -41,7 +41,7 @@ model Gift {
 
 model Transaction {
   id          String   @id @default(cuid())
-  giftId      String
+  giftId      String   @unique
   // gift       Gift     @relation(fields: [giftId], references: [id])
   gifterId    String
   // giftUser   User     @relation(fields: [giftUserId], references: [id])

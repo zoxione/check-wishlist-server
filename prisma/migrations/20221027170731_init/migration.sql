@@ -28,7 +28,7 @@ CREATE TABLE "Gift" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "imageUrl" TEXT,
     "isGifted" BOOLEAN NOT NULL DEFAULT false,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Gift_pkey" PRIMARY KEY ("id")
 );
@@ -36,8 +36,8 @@ CREATE TABLE "Gift" (
 -- CreateTable
 CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
-    "giftId" INTEGER NOT NULL,
-    "gifterId" INTEGER NOT NULL,
+    "giftId" TEXT NOT NULL,
+    "gifterId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isCompleted" BOOLEAN NOT NULL DEFAULT false,
 
@@ -46,3 +46,6 @@ CREATE TABLE "Transaction" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Transaction_giftId_key" ON "Transaction"("giftId");

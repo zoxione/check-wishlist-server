@@ -6,3 +6,5 @@ compose:
 	docker-compose up --build
 stop:
 	docker stop check-server
+dev_postgres:
+	docker run -p 5432:5432 --rm --name check-postgres -e POSTGRES_PASSWORD=postgressecret postgres

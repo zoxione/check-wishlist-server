@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "Gift" ALTER COLUMN "userId" SET DATA TYPE TEXT;
-
--- AlterTable
-ALTER TABLE "Transaction" ALTER COLUMN "giftId" SET DATA TYPE TEXT,
-ALTER COLUMN "gifterId" SET DATA TYPE TEXT;
