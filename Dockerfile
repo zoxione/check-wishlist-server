@@ -1,21 +1,23 @@
-FROM node:alpine
+FROM node:alpine AS builder
+
+WORKDIR /app
 
 COPY [ "package.json", "yarn.lock*", "./" ]
-
 COPY prisma ./prisma/
 
-COPY .env ./
-
-COPY tsconfig.json ./
+RUN yarn install
 
 COPY . .
 
-RUN yarn install
-RUN yarn prisma migrate dev --name init
-RUN yarn add @prisma/client
+RUN yarn build
+
+FROM node:alpine
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+
 EXPOSE 3000
 
-
-RUN yarn add global @nestjs/cli
-RUN yarn build
-CMD [ "yarn", "start:prod" ]
+CMD [ "yarn", "start:migrate:prod" ]
