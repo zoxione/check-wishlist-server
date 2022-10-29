@@ -27,6 +27,17 @@ export class TransactionService {
     });
   }
 
+  async changeTransaction(params: {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.TransactionUpdateInput;
+  }): Promise<Transaction> {
+    const { where, data } = params;
+    return this.prisma.transaction.update({
+      data,
+      where,
+    });
+  }
+
   async updateTransaction(params: {
     where: Prisma.TransactionWhereUniqueInput;
     data: Prisma.TransactionUpdateInput;

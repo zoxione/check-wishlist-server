@@ -10,19 +10,23 @@ datasource db {
 
 model User {
   id            String   @id @default(cuid())
-  name          String
+  username      String   @unique
+  fullname      String?
   email         String   @unique
   password      String
+  about         String?
   imageUrl      String?
-  coverUrl      String?
+  backgroundUrl String?
   address       String?
+  isVerified    Boolean  @default(false)
+  role          String   @default("user")
   tiktokName    String?
   twitterName   String?
   vkName        String?
-  tgName        String?
+  telegramName  String?
   instagramName String?
   createdAt     DateTime @default(now())
-  //  gifts         Gift[]
+  updatedAt     DateTime @updatedAt
 }
 
 model Gift {
@@ -32,19 +36,19 @@ model Gift {
   shopName    String
   shopUrl     String
   price       Int
-  createdAt   DateTime @default(now())
   imageUrl    String?
   isGifted    Boolean  @default(false)
   userId      String
-  // user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Transaction {
   id          String   @id @default(cuid())
-  giftId      String   @unique
-  // gift       Gift     @relation(fields: [giftId], references: [id])
+  giftId      String
+  userId      String
   gifterId    String
-  // giftUser   User     @relation(fields: [giftUserId], references: [id])
-  createdAt   DateTime @default(now())
   isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -12,10 +12,11 @@ COPY . .
 
 RUN yarn install
 RUN yarn add @prisma/client
-EXPOSE 3000
+EXPOSE 8080
 
-RUN yarn add global @nestjs/cli
-RUN yarn build
 
 RUN yarn prisma migrate deploy
+RUN yarn prisma db push --force-reset --accept-data-loss
+
+RUN yarn build
 CMD [ "yarn", "start:prod" ]

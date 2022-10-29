@@ -19,6 +19,15 @@ export class UserService {
     });
   }
 
+  async loginUser(params: {
+    data: Prisma.UserWhereInput
+  }): Promise<User | null> {
+    const { data } = params;
+    return this.prisma.user.findUnique({
+      where: { email: data.email.toString() },
+    });
+  }
+
   async createUser(
     data: Prisma.UserCreateInput
   ): Promise<User> {

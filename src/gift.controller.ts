@@ -40,10 +40,11 @@ export class GiftController {
 
   @Put('gift_give')
   async giveGift(
-    @Body() data: { giftId: string, gifterId: string },
+    @Body() data: { giftId: string, userId: string, gifterId: string },
   ): Promise<GiftModel> {
     this.transactionService.createTransaction({
       giftId: data.giftId,
+      userId: data.userId,
       gifterId: data.gifterId,
       isCompleted: false
     });

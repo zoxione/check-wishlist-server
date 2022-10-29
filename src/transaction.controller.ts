@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, Patch } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { Transaction as TransactionModel } from '@prisma/client';
 
@@ -23,15 +23,26 @@ export class TransactionController {
 
   @Post('transaction')
   async createTransaction(
-    @Body() TransactionData: { giftId: string, gifterId: string, isCompleted: boolean },
+    @Body() TransactionData: { giftId: string, userId: string, gifterId: string, isCompleted: boolean },
   ): Promise<TransactionModel> {
     return this.TransactionService.createTransaction(TransactionData);
+  }
+
+  @Patch('transaction/:id')
+  async changeTransaction(
+    @Param('id') id: string,
+    @Body() TransactionData: { isCompleted: boolean },
+  ): Promise<TransactionModel> {
+    return this.TransactionService.changeTransaction({
+      where: { id: id },
+      data: TransactionData,
+    });
   }
 
   @Put('transaction/:id')
   async updateTransaction(
     @Param('id') id: string,
-    @Body() TransactionData: { giftId: string, gifterId: string, isCompleted: boolean },
+    @Body() TransactionData: { giftId: string, userId: string, gifterId: string, isCompleted: boolean },
   ): Promise<TransactionModel> {
     return this.TransactionService.updateTransaction({
       where: { id: id },
