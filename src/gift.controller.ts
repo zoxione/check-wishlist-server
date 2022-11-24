@@ -2,7 +2,6 @@ import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common'
 import { GiftService } from './gift.service';
 import { Gift as GiftModel } from '@prisma/client';
 import { TransactionService } from './transaction.service';
-import { Transaction as TransactionModel } from '@prisma/client';
 
 @Controller()
 export class GiftController {
