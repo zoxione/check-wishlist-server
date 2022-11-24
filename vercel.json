@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "env": {},
   "builds": [
     {
       "src": "src/main.ts",
@@ -14,8 +15,7 @@
         "GET",
         "POST",
         "PUT",
-        "DELETE",
-        "PATCH"
+        "DELETE"
       ]
     }
   ]
