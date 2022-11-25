@@ -6,6 +6,6 @@
 Стек: NestJS, supabase.
 
 ### Превью:
-https://check-wishlist-server.onrender.com
+https://check-wishlist-server.onrender.com/api
 
-https://check-wishlist-server.vercel.app
+https://check-wishlist-server.vercel.app/api
