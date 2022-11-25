@@ -21,8 +21,8 @@ export interface UserModel {
   // updatedAt?: Date;
 }
 
-export interface IGift {
-  id?: string;
+export interface GiftModel {
+  id?: typeof uuid;
   title: string;
   description?: string;
   shopName: string;
@@ -35,7 +35,7 @@ export interface IGift {
   // updatedAt?: Date;
 }
 
-export interface ITransaction {
+export interface TransactionModel {
   id?: string;
   giftId: string;
   userId: string;

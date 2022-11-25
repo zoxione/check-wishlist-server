@@ -14,9 +14,9 @@ export class UserService {
       throw error;
     }
 
-    let user: UserModel[] = data;
+    let response: UserModel[] = data;
 
-    return user;
+    return response;
   }
 
   async getUserById(id: typeof uuid): Promise<UserModel> {
@@ -29,8 +29,62 @@ export class UserService {
       throw error;
     }
 
-    let user: UserModel = data[0];
+    let response: UserModel = data[0];
 
-    return user;
+    return response;
   }
+
+  async getUserByUsername(username: string): Promise<UserModel> {
+    const { data, error } = await supabaseClient
+      .from('User')
+      .select('*')
+      .eq('username', username)
+
+    if (error) {
+      throw error;
+    }
+
+    let response: UserModel = data[0];
+
+    return response;
+  }
+
+  async createUser(user: UserModel): Promise<UserModel> {
+    const { error } = await supabaseClient
+      .from('User')
+      .insert(user)
+
+    if (error) {
+      throw error;
+    }
+
+    return await this.getUserByUsername(user.username);
+  }
+
+  async updateUserById(id: typeof uuid, user: UserModel): Promise<UserModel> {
+    const { error } = await supabaseClient
+      .from('User')
+      .update(user)
+      .eq('id', id)
+
+    if (error) {
+      throw error;
+    }
+
+    return await this.getUserById(id);
+  }
+
+  async deleteUserById(id: typeof uuid): Promise<UserModel[]> {
+    const { error } = await supabaseClient
+      .from('User')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      throw error;
+    }
+
+    return await this.getAllUsers();
+  }
+
 }
