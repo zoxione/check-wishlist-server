@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserModel } from './types';
 import { UserService } from './user.service';
@@ -9,7 +9,7 @@ import { v4 as uuid } from 'uuid';
 export class UserController {
   constructor(private readonly appService: UserService) { }
 
-  @Get('user')
+  @Get('users')
   @ApiOperation({ summary: 'Get all users' })
   getAllUsers(): Promise<UserModel[]> {
     return this.appService.getAllUsers();
@@ -19,6 +19,18 @@ export class UserController {
   @ApiOperation({ summary: 'Get user' })
   getUser(@Param('id') id: typeof uuid): Promise<UserModel> {
     return this.appService.getUserById(id);
+  }
+
+  @Get('user')
+  @ApiOperation({ summary: 'Get user by id' })
+  getUserById(@Query('id') id: typeof uuid, @Query('username') username: string): Promise<UserModel> | null {
+    if (id && username === undefined) {
+      return this.appService.getUserById(id);
+    }
+    else if (username && id === undefined) {
+      return this.appService.getUserByUsername(username);
+    }
+    return null;
   }
 
   @Post('user')
