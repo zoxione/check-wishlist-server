@@ -5,19 +5,42 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class TransactionService {
-  async getAllTransactions(): Promise<TransactionModel[]> {
+  async getAllTransactions(): Promise<any[]> {
     const { data, error } = await supabaseClient
       .from('Transaction')
-      .select('*')
+      .select(`
+        *,
+        Gift(*),
+        Gifter:gifterId(*),
+        User:userId(*)
+      `)
 
     if (error) {
       throw error;
     }
 
-    let response: TransactionModel[] = data;
-
-    return response;
+    return data;
   }
+
+  async getAllTransactionsByUserId(userId: typeof uuid): Promise<any[]> {
+    const { data, error } = await supabaseClient
+      .from('Transaction')
+      .select(`
+        *,
+        Gift(*),
+        Gifter:gifterId(*),
+        User:userId(*)
+      `)
+      .eq('userId', userId)
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+
 
   async getTransactionById(id: typeof uuid): Promise<TransactionModel> {
     const { data, error } = await supabaseClient

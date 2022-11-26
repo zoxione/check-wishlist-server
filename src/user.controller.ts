@@ -12,6 +12,7 @@ export class UserController {
   @Post('users_login')
   @ApiOperation({ summary: 'Login' })
   loginUser(@Body() data: { email: string, password: string }): Promise<UserModel> {
+    console.log(data)
     return this.appService.loginUser(data.email, data.password);
   }
 
