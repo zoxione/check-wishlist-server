@@ -57,8 +57,11 @@ export class GiftController {
       if (isGifted === true) {
         return this.appService.deleteGiftedGiftsByUserId(userId);
       }
-      else {
+      else if (isGifted === false) {
         return this.appService.deleteWishlistGiftsByUserId(userId);
+      }
+      else {
+        return this.appService.getAllGifts();
       }
     }
     else {
