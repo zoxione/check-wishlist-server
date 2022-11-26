@@ -75,6 +75,24 @@ export class UserService {
   }
 
   async deleteUserById(id: typeof uuid): Promise<UserModel[]> {
+    const { error: error1 } = await supabaseClient
+      .from('Transaction')
+      .delete()
+      .eq('userId', id)
+
+    if (error1) {
+      throw error1;
+    }
+
+    const { error: error2 } = await supabaseClient
+      .from('Transaction')
+      .delete()
+      .eq('gifterId', id)
+
+    if (error2) {
+      throw error1;
+    }
+
     const { error } = await supabaseClient
       .from('User')
       .delete()
