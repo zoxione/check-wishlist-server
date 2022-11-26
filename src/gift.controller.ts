@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GiftModel } from './types';
+import { GiftModel, TransactionModel } from './types';
 import { GiftService } from './gift.service';
 import { v4 as uuid } from 'uuid';
 
@@ -36,6 +36,12 @@ export class GiftController {
   @ApiOperation({ summary: 'Update gift' })
   updateGift(@Param('id') id: typeof uuid, @Body() gift: GiftModel): Promise<GiftModel> {
     return this.appService.updateGiftById(id, gift);
+  }
+
+  @Put('gifts_give')
+  @ApiOperation({ summary: 'Give gift' })
+  giveGift(@Body() transaction: TransactionModel): Promise<GiftModel> {
+    return this.appService.giveGift(transaction);
   }
 
   @Delete('gifts/:id')

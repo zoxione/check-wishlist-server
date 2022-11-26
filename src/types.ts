@@ -37,9 +37,9 @@ export interface GiftModel {
 
 export interface TransactionModel {
   id?: string;
-  giftId: string;
-  userId: string;
-  gifterId: string;
+  giftId: typeof uuid;
+  userId: typeof uuid;
+  gifterId: typeof uuid;
   isCompleted?: boolean;
   createdAt?: Date;
   // updatedAt?: Date;

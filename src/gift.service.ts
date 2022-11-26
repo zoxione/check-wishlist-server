@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { supabaseClient } from './supabase';
-import { GiftModel } from './types';
+import { GiftModel, TransactionModel } from './types';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -70,6 +70,27 @@ export class GiftService {
     }
 
     return await this.getGiftById(id);
+  }
+
+  async giveGift(transaction: TransactionModel): Promise<GiftModel> {
+    const { error } = await supabaseClient
+      .from('Gift')
+      .update({ isGifted: true })
+      .eq('id', transaction.giftId)
+
+    if (error) {
+      throw error;
+    }
+
+    const { error: error2 } = await supabaseClient
+      .from('Transaction')
+      .insert(transaction)
+
+    if (error2) {
+      throw error2;
+    }
+
+    return await this.getGiftById(transaction.giftId);
   }
 
   async deleteGiftById(id: typeof uuid): Promise<GiftModel[]> {
