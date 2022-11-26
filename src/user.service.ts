@@ -5,6 +5,21 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UserService {
+  async loginUser(email: string, password: string): Promise<UserModel> {
+    const { data, error } = await supabaseClient
+      .from('User')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password)
+
+    if (error) {
+      throw error;
+    }
+
+    return data[0] as UserModel;
+  }
+
+
   async getAllUsers(): Promise<UserModel[]> {
     const { data, error } = await supabaseClient
       .from('User')
@@ -14,9 +29,7 @@ export class UserService {
       throw error;
     }
 
-    let response: UserModel[] = data;
-
-    return response;
+    return data as UserModel[];
   }
 
   async getUserById(id: typeof uuid): Promise<UserModel> {
@@ -29,9 +42,7 @@ export class UserService {
       throw error;
     }
 
-    let response: UserModel = data[0];
-
-    return response;
+    return data[0] as UserModel;
   }
 
   async getUserByUsername(username: string): Promise<UserModel> {
@@ -44,9 +55,7 @@ export class UserService {
       throw error;
     }
 
-    let response: UserModel = data[0];
-
-    return response;
+    return data[0] as UserModel;
   }
 
   async createUser(user: UserModel): Promise<UserModel> {

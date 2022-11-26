@@ -14,9 +14,7 @@ export class GiftService {
       throw error;
     }
 
-    let response: GiftModel[] = data;
-
-    return response;
+    return data as GiftModel[];
   }
 
   async getAllGiftsByUserId(userId: typeof uuid): Promise<GiftModel[]> {
@@ -42,9 +40,7 @@ export class GiftService {
       throw error;
     }
 
-    let response: GiftModel = data[0];
-
-    return response;
+    return data[0] as GiftModel;
   }
 
   async createGift(gift: GiftModel): Promise<GiftModel[]> {

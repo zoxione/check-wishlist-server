@@ -9,6 +9,12 @@ import { v4 as uuid } from 'uuid';
 export class UserController {
   constructor(private readonly appService: UserService) { }
 
+  @Post('users_login')
+  @ApiOperation({ summary: 'Login' })
+  loginUser(@Body() data: { email: string, password: string }): Promise<UserModel> {
+    return this.appService.loginUser(data.email, data.password);
+  }
+
   @Get('users')
   @ApiOperation({ summary: 'Get users' })
   getUsers(@Query('id') id: typeof uuid, @Query('username') username: string): Promise<UserModel[]> | Promise<UserModel> | null {
