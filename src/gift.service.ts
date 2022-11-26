@@ -19,6 +19,19 @@ export class GiftService {
     return response;
   }
 
+  async getAllGiftsByUserId(userId: typeof uuid): Promise<GiftModel[]> {
+    const { data, error } = await supabaseClient
+      .from('Gift')
+      .select('*')
+      .eq('userId', userId)
+
+    if (error) {
+      throw error;
+    }
+
+    return data as GiftModel[];
+  }
+
   async getGiftById(id: typeof uuid): Promise<GiftModel> {
     const { data, error } = await supabaseClient
       .from('Gift')
@@ -72,4 +85,40 @@ export class GiftService {
     return await this.getAllGifts();
   }
 
+  async deleteGiftedGiftsByUserId(userId: typeof uuid): Promise<GiftModel[]> {
+    const { error: error1 } = await supabaseClient
+      .from('Transaction')
+      .delete()
+      .eq('userId', userId)
+
+    if (error1) {
+      throw error1;
+    }
+
+    const { error } = await supabaseClient
+      .from('Gift')
+      .delete()
+      .eq('userId', userId)
+      .eq('isGifted', true)
+
+    if (error) {
+      throw error;
+    }
+
+    return await this.getAllGifts();
+  }
+
+  async deleteWishlistGiftsByUserId(userId: typeof uuid): Promise<GiftModel[]> {
+    const { error } = await supabaseClient
+      .from('Gift')
+      .delete()
+      .eq('userId', userId)
+      .eq('isGifted', false)
+
+    if (error) {
+      throw error;
+    }
+
+    return await this.getAllGifts();
+  }
 }
