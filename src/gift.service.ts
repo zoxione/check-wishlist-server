@@ -136,6 +136,8 @@ export class GiftService {
       .eq('userId', userId)
       .eq('isGifted', false)
 
+    console.log("deleteWishlistGiftsByUserId");
+
     if (error) {
       throw error;
     }

@@ -52,12 +52,13 @@ export class GiftController {
 
   @Delete('gifts')
   @ApiOperation({ summary: 'Delete gifts' })
-  deleteGifts(@Query('userId') userId: typeof uuid, @Query('isGifted') isGifted: boolean): Promise<GiftModel[]> {
-    if (userId !== undefined && isGifted !== undefined) {
-      if (isGifted === true) {
+  deleteGifts(@Query('userId') userId: typeof uuid, @Query('isGifted') isGifted: string): Promise<GiftModel[]> {
+    console.log(userId, isGifted);
+    if (userId) {
+      if (isGifted === 'true') {
         return this.appService.deleteGiftedGiftsByUserId(userId);
       }
-      else if (isGifted === false) {
+      else if (isGifted === 'false') {
         return this.appService.deleteWishlistGiftsByUserId(userId);
       }
       else {
