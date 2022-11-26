@@ -9,25 +9,25 @@ import { v4 as uuid } from 'uuid';
 export class TransactionController {
   constructor(private readonly appService: TransactionService) { }
 
-  @Get('transaction')
+  @Get('transactions')
   @ApiOperation({ summary: 'Get all transactions' })
   getAllTransactions(): Promise<TransactionModel[]> {
     return this.appService.getAllTransactions();
   }
 
-  @Get('transaction/:id')
+  @Get('transactions/:id')
   @ApiOperation({ summary: 'Get transaction' })
   getTransaction(@Param('id') id: typeof uuid): Promise<TransactionModel> {
     return this.appService.getTransactionById(id);
   }
 
-  @Post('transaction')
+  @Post('transactions')
   @ApiOperation({ summary: 'Create transaction' })
   createTransaction(@Body() transaction: TransactionModel): Promise<TransactionModel[]> {
     return this.appService.createTransaction(transaction);
   }
 
-  @Put('transaction_complete/:id')
+  @Put('transactions_complete/:id')
   @ApiOperation({ summary: 'Complete transaction' })
   updateTransaction(@Param('id') id: typeof uuid): Promise<TransactionModel> {
     return this.appService.completeTransaction(id);

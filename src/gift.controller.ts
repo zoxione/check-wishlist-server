@@ -9,31 +9,31 @@ import { v4 as uuid } from 'uuid';
 export class GiftController {
   constructor(private readonly appService: GiftService) { }
 
-  @Get('gift')
+  @Get('gifts')
   @ApiOperation({ summary: 'Get all gifts' })
   getAllGifts(): Promise<GiftModel[]> {
     return this.appService.getAllGifts();
   }
 
-  @Get('gift/:id')
+  @Get('gifts/:id')
   @ApiOperation({ summary: 'Get gift' })
   getGift(@Param('id') id: typeof uuid): Promise<GiftModel> {
     return this.appService.getGiftById(id);
   }
 
-  @Post('gift')
+  @Post('gifts')
   @ApiOperation({ summary: 'Create gift' })
   createGift(@Body() gift: GiftModel): Promise<GiftModel[]> {
     return this.appService.createGift(gift);
   }
 
-  @Put('gift/:id')
+  @Put('gifts/:id')
   @ApiOperation({ summary: 'Update gift' })
   updateGift(@Param('id') id: typeof uuid, @Body() gift: GiftModel): Promise<GiftModel> {
     return this.appService.updateGiftById(id, gift);
   }
 
-  @Delete('gift/:id')
+  @Delete('gifts/:id')
   @ApiOperation({ summary: 'Delete gift' })
   deleteUser(@Param('id') id: typeof uuid): Promise<GiftModel[]> {
     return this.appService.deleteGiftById(id);

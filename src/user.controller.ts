@@ -10,42 +10,39 @@ export class UserController {
   constructor(private readonly appService: UserService) { }
 
   @Get('users')
-  @ApiOperation({ summary: 'Get all users' })
-  getAllUsers(): Promise<UserModel[]> {
-    return this.appService.getAllUsers();
-  }
-
-  @Get('user/:id')
-  @ApiOperation({ summary: 'Get user' })
-  getUser(@Param('id') id: typeof uuid): Promise<UserModel> {
-    return this.appService.getUserById(id);
-  }
-
-  @Get('user')
-  @ApiOperation({ summary: 'Get user by id' })
-  getUserById(@Query('id') id: typeof uuid, @Query('username') username: string): Promise<UserModel> | null {
+  @ApiOperation({ summary: 'Get users' })
+  getUsers(@Query('id') id: typeof uuid, @Query('username') username: string): Promise<UserModel[]> | Promise<UserModel> | null {
     if (id && username === undefined) {
       return this.appService.getUserById(id);
     }
     else if (username && id === undefined) {
       return this.appService.getUserByUsername(username);
     }
+    else if (id === undefined && username === undefined) {
+      return this.appService.getAllUsers();
+    }
     return null;
   }
 
-  @Post('user')
+  @Get('users/:id')
+  @ApiOperation({ summary: 'Get user' })
+  getUser(@Param('id') id: typeof uuid): Promise<UserModel> {
+    return this.appService.getUserById(id);
+  }
+
+  @Post('users')
   @ApiOperation({ summary: 'Create user' })
   createUser(@Body() user: UserModel): Promise<UserModel> {
     return this.appService.createUser(user);
   }
 
-  @Put('user/:id')
+  @Put('users/:id')
   @ApiOperation({ summary: 'Update user' })
   updateUser(@Param('id') id: typeof uuid, @Body() user: UserModel): Promise<UserModel> {
     return this.appService.updateUserById(id, user);
   }
 
-  @Delete('user/:id')
+  @Delete('users/:id')
   @ApiOperation({ summary: 'Delete user' })
   deleteUser(@Param('id') id: typeof uuid): Promise<UserModel[]> {
     return this.appService.deleteUserById(id);
