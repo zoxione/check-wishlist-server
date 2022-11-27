@@ -68,4 +68,10 @@ export class GiftController {
       return this.appService.getAllGifts();
     }
   }
+
+  @Post('gifts_parse')
+  @ApiOperation({ summary: 'Parse gift' })
+  parseGift(@Body() data: { shopName: string, shopUrl: string }): Promise<{}> {
+    return this.appService.parseGift(data);
+  }
 }

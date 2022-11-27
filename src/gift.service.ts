@@ -2,6 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { supabaseClient } from './supabase';
 import { GiftModel, TransactionModel } from './types';
 import { v4 as uuid } from 'uuid';
+import puppeteer from 'puppeteer';
+const userAgent = require('user-agents');
+
+
+const WebScraping = async (url: string) => {
+  const browser = await puppeteer.launch({
+    headless: true,
+    defaultViewport: null,
+  });
+  const page = await browser.newPage();
+  //await page.setUserAgent(userAgent.toString());
+
+  await page.goto(url, { waitUntil: 'networkidle2' });
+
+  browser.close();
+
+  return page;
+};
+
 
 @Injectable()
 export class GiftService {
@@ -139,5 +158,43 @@ export class GiftService {
     }
 
     return await this.getAllGifts();
+  }
+
+  async parseGift(data: { shopName: string, shopUrl: string }): Promise<{}> {
+    let result = {};
+    const page = await WebScraping(data.shopUrl);
+
+    switch (data.shopName) {
+      case 'wildberries.ru':
+        result = await page.evaluate(() => {
+          const title = document.querySelector('h1')?.textContent;
+          const price = document.querySelector('.price-block__old-price')?.textContent?.replace(/\s/g, '')?.slice(0, -1);
+          const image = document.querySelector('.photo-zoom__preview')?.getAttribute('src');
+          const description = document.querySelector('.collapsable__text')?.textContent;
+          return { title, price, image, description };
+        });
+        break;
+      case 'aliexpress.ru':
+        result = await page.evaluate(() => {
+          const title = document.querySelector('h1')?.textContent;
+          const price = document.querySelector('.snow-price_SnowPrice__secondPrice__18x8np')?.textContent?.replace(/\s/g, '')?.replace(',', '.')?.slice(0, -4);
+          const image = document.querySelector('img[data-idx="0"]')?.getAttribute('src');
+          const description = document.querySelector('.detail-desc-decorate-richtext')?.textContent;
+          return { title, price, image, description };
+        });
+        break;
+      case 'dns-shop.ru':
+        result = await page.evaluate(() => {
+          const title = document.querySelector('h1')?.textContent?.replace('\"', '');
+          let price = document.querySelector('.product-buy__price')?.textContent;
+          price = price?.substring(0, price.indexOf(' ₽'));
+          const image = document.querySelectorAll('img[data-was-processed="true"]')[6]?.getAttribute('src');
+          const description = document.querySelector('.product-card-description-text')?.textContent;
+          return { title, price, image, description };
+        });
+        break;
+    }
+
+    return result;
   }
 }
