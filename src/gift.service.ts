@@ -146,36 +146,38 @@ export class GiftService {
     let result = {};
     const page = await WebScraping(data.shopUrl);
 
-    switch (data.shopName) {
-      case 'wildberries.ru':
-        result = await page.evaluate(() => {
-          const title = document.querySelector('h1')?.textContent;
-          const price = document.querySelector('.price-block__old-price')?.textContent?.replace(/\s/g, '')?.slice(0, -1);
-          const image = document.querySelector('.photo-zoom__preview')?.getAttribute('src');
-          const description = document.querySelector('.collapsable__text')?.textContent;
-          return { title, price, image, description };
-        });
-        break;
-      case 'aliexpress.ru':
-        result = await page.evaluate(() => {
-          const title = document.querySelector('h1')?.textContent;
-          const price = document.querySelector('.snow-price_SnowPrice__secondPrice__18x8np')?.textContent?.replace(/\s/g, '')?.replace(',', '.')?.slice(0, -4);
-          const image = document.querySelector('img[data-idx="0"]')?.getAttribute('src');
-          const description = document.querySelector('.detail-desc-decorate-richtext')?.textContent;
-          return { title, price, image, description };
-        });
-        break;
-      case 'dns-shop.ru':
-        result = await page.evaluate(() => {
-          const title = document.querySelector('h1')?.textContent?.replace('\"', '');
-          let price = document.querySelector('.product-buy__price')?.textContent;
-          price = price?.substring(0, price.indexOf(' ₽'));
-          const image = document.querySelectorAll('img[data-was-processed="true"]')[6]?.getAttribute('src');
-          const description = document.querySelector('.product-card-description-text')?.textContent;
-          return { title, price, image, description };
-        });
-        break;
-    }
+    result = await page.title();
+
+    // switch (data.shopName) {
+    //   case 'wildberries.ru':
+    //     result = await page.evaluate(() => {
+    //       const title = document.querySelector('h1')?.textContent;
+    //       const price = document.querySelector('.price-block__old-price')?.textContent?.replace(/\s/g, '')?.slice(0, -1);
+    //       const image = document.querySelector('.photo-zoom__preview')?.getAttribute('src');
+    //       const description = document.querySelector('.collapsable__text')?.textContent;
+    //       return { title, price, image, description };
+    //     });
+    //     break;
+    //   case 'aliexpress.ru':
+    //     result = await page.evaluate(() => {
+    //       const title = document.querySelector('h1')?.textContent;
+    //       const price = document.querySelector('.snow-price_SnowPrice__secondPrice__18x8np')?.textContent?.replace(/\s/g, '')?.replace(',', '.')?.slice(0, -4);
+    //       const image = document.querySelector('img[data-idx="0"]')?.getAttribute('src');
+    //       const description = document.querySelector('.detail-desc-decorate-richtext')?.textContent;
+    //       return { title, price, image, description };
+    //     });
+    //     break;
+    //   case 'dns-shop.ru':
+    //     result = await page.evaluate(() => {
+    //       const title = document.querySelector('h1')?.textContent?.replace('\"', '');
+    //       let price = document.querySelector('.product-buy__price')?.textContent;
+    //       price = price?.substring(0, price.indexOf(' ₽'));
+    //       const image = document.querySelectorAll('img[data-was-processed="true"]')[6]?.getAttribute('src');
+    //       const description = document.querySelector('.product-card-description-text')?.textContent;
+    //       return { title, price, image, description };
+    //     });
+    //     break;
+    // }
 
     return result;
   }
