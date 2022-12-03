@@ -2,25 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { supabaseClient } from './supabase';
 import { GiftModel, TransactionModel } from './types';
 import { v4 as uuid } from 'uuid';
-import puppeteer from 'puppeteer';
-const userAgent = require('user-agents');
-
-
-const WebScraping = async (url: string) => {
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: null,
-  });
-  const page = await browser.newPage();
-  //await page.setUserAgent(userAgent.toString());
-
-  await page.goto(url, { waitUntil: 'networkidle2' });
-
-  browser.close();
-
-  return page;
-};
-
+import { WebScraping } from './parse';
 
 @Injectable()
 export class GiftService {
