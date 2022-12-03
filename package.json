@@ -4,7 +4,10 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "ISC",
+  "engines": {
+    "node": "^14"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
