@@ -22,13 +22,16 @@ export const WebScraping = async (url: string) => {
   }
 
   let browser = await puppeteer.launch(options);
+  // const browser = await puppeteer.launch({
+  //   headless: true,
+  //   defaultViewport: null,
+  // });
   const page = await browser.newPage();
-  //await page.setUserAgent(userAgent.toString());
 
   await page.goto(url, { waitUntil: 'networkidle2' });
-  await page.screenshot({ path: `screenshots/gift.jpeg` });
+  await page.screenshot({ path: `src/screenshots/gift.jpeg` });
 
-  await browser.close();
+  //await browser.close();
 
   return page;
 };
